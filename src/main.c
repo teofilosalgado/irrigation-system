@@ -128,12 +128,12 @@ void main() {
     configure_timer0();
     start_timer0();
 
+    // Main screen loop
     home_screen_setup(trigger_time);
     while(1) {
-        delay_ms(100);
-
         // Set trigger and duration values again
         if(!BUTTON_ENTER_BIT) {
+            delay_ms(250);
             settings_screen_loop(set_trigger_time_screen_title, trigger_time, SET_TIME);
             settings_screen_loop(set_duration_time_screen_title, duration, SET_DURATION);
         }
