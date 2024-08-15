@@ -1,3 +1,4 @@
+#include "lib/global.h"
 #include "lib/timer.h"
 #include "lib/lcd.h"
 #include "lib/delay.h"
@@ -5,11 +6,9 @@
 #include "screen/settings.h"
 #include "screen/home.h"
 
-// Set maximum value for timer0 auxiliary counter, keeping update frequency at 1Hz
-#define TIMER_COUNTER_MAX 100
-
-// View models
-//
+/*
+ * View models
+ */
 // Set current time screen variables
 __code const char set_current_time_screen_title[] = "Set current time";
 int current_time[] = {0, 0, 0, 0, 0, 0};
@@ -22,8 +21,9 @@ int trigger_time[] = {0, 0, 0, 0, 0, 0};
 __code const char set_duration_time_screen_title[] = "Set duration (s)";
 int duration[] = {0, 0, 0, 0};
 
-// Timing related globals
-//
+/*
+ * Timing related globals
+ */
 // Duration value (s) as an integer
 int active_time_duration = 0;
 
@@ -35,6 +35,9 @@ enum status_t status = INACTIVE;
 
 // Auxiliary counter for timer0, keeping frequency at 1Hz
 int timer0_counter = 0;
+
+// Updates LCD display whenever on-screen values change
+int should_update_screen = 0;
 
 void set_active_time_duration() {
     active_time_duration = (duration[0] * 1000) +  (duration[1] * 100) +  (duration[2] * 10) +  duration[3];
@@ -97,9 +100,11 @@ void update_status() {
 
 void timer0_interrupt_handler() __interrupt(1) {
     stop_timer0();
+    should_update_screen = 0;
 
     if(timer0_counter >= TIMER_COUNTER_MAX) {
-        timer0_counter = 0; 
+        timer0_counter = 0;
+        should_update_screen = 1;
 
         update_current_time();
         update_status();
@@ -113,17 +118,29 @@ void main() {
     delay_ms(1000);
     lcd_init();
  
+    // Initial setup
     settings_screen_loop(set_current_time_screen_title, current_time, SET_TIME);
     settings_screen_loop(set_trigger_time_screen_title, trigger_time, SET_TIME);
     settings_screen_loop(set_duration_time_screen_title, duration, SET_DURATION);
 
+    // Configure timer0 interrupt
     set_active_time_duration();
     configure_timer0();
     start_timer0();
 
     home_screen_setup(trigger_time);
     while(1) {
-        home_screen_update(current_time, &status);
         delay_ms(100);
+
+        // Set trigger and duration values again
+        if(!BUTTON_ENTER_BIT) {
+            settings_screen_loop(set_trigger_time_screen_title, trigger_time, SET_TIME);
+            settings_screen_loop(set_duration_time_screen_title, duration, SET_DURATION);
+        }
+
+        // Check if any on-scren value has been updated
+        if(should_update_screen) {
+            home_screen_update(current_time, &status);
+        }
     }
 }

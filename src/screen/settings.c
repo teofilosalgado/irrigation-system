@@ -80,7 +80,7 @@ void settings_screen_loop(const char* title, int* current_display_values, enum s
             if(screen_type == SET_TIME) {
                 if(current_display_values[2] > 5) {
                     current_display_values[2] = 0;
-                }            
+                }
                 else if(current_display_values[0] >= 2 && current_display_values[1] > 3) {
                     current_display_values[1] = 0;
                 }
