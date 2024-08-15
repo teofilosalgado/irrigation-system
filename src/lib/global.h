@@ -19,4 +19,8 @@
 #define TH_VALUE 0xFC 
 #define TL_VALUE 0x66
 
+// Timer flags
+#define TIMER0_FLAG (TCON&(1<<5))
+#define TIMER1_FLAG (TCON&(1<<7))
+
 #endif
