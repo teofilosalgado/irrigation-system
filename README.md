@@ -4,18 +4,17 @@ A simple 8051-based irrigation system for my garden.
 
 ## Installation
 
-1. **System requirements**
+**1. System requirements**
 
-First, install the following required tools:
+  First, install the following tools:
 
 - SDCC >= 4.2.0
 - GNU Make >= 4.4.1
 - avrdude >= 7.3 
 
-2. **Hardware specific settings**
+**2. Hardware specific settings**
 
-The `src/lib/global.h` file contains constants defined according to the
-suggested circuit, more specifically:
+The `src/lib/global.h` file contains constants defined according to the suggested circuit, more specifically:
 
 - Countdown timer register values
 
@@ -23,7 +22,7 @@ suggested circuit, more specifically:
 
 Feel free to edit them according to your circuit.
 
-3. **Compilation**
+**3. Compilation**
 
 To compile this application, simply run:
 
@@ -31,19 +30,17 @@ To compile this application, simply run:
 make
 ```
 
-You will have a new folder named `build` containing the resulting `main.hex`
-file.
+You will have a new folder named `build` created at the root of your project containing the resulting `main.hex` file.
 
-4. **Flashing**
+**4. Flashing**
 
-To flash your microcontroller connected to the `/dev/ttyUSB0` port through your
-programmer, execute:
+To flash your microcontroller connected to the `/dev/ttyUSB0` port through your programmer, execute:
 
 ```sh
 make PORT=/dev/ttyUSB0 flash
 ```
 
-5. **Suggested Circuit**
+**5. Suggested Circuit**
 
 ## Usage
 
