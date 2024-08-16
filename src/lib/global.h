@@ -7,13 +7,13 @@
  * IO
  */
 // LCD pins
-#define LCD_RS_BIT P3_0
-#define LCD_EN_BIT P3_1
-#define LCD_PORT P3
+#define LCD_RS_BIT P2_0
+#define LCD_EN_BIT P2_1
+#define LCD_PORT P2
 
 // Button pins
-#define BUTTON_LEFT_BIT P0_3
-#define BUTTON_RIGHT_BIT P0_0
+#define BUTTON_LEFT_BIT P0_0
+#define BUTTON_RIGHT_BIT P0_3
 
 #define BUTTON_ENTER_BIT P0_1
 #define BUTTON_SET_BIT P0_2
