@@ -9,4 +9,8 @@ void start_timer1();
 void stop_timer1();
 void configure_timer1(); 
 
+// Timer flags
+#define TIMER0_FLAG (TCON&(1<<5))
+#define TIMER1_FLAG (TCON&(1<<7))
+
 #endif

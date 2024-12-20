@@ -28,8 +28,4 @@
 // Maximum value for timer auxiliary counter, resulting in a 1Hz update frequency (1s period)
 #define TIMER_COUNTER_MAX 1000
 
-// Timer flags
-#define TIMER0_FLAG (TCON&(1<<5))
-#define TIMER1_FLAG (TCON&(1<<7))
-
 #endif

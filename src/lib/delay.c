@@ -12,6 +12,6 @@ void delay_ms(int duration) {
 
         while(!TIMER1_FLAG);
 
-        stop_timer0();
+        stop_timer1();
     }
 }

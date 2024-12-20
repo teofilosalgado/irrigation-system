@@ -9,14 +9,15 @@ void start_timer0() {
 
     // Set:
     //   - TR0 = 1 (Timer0 run flag)
-    TCON |= (1 << 4);
+    TR0 = 1;
 }
 
 void stop_timer0() {
     // Set:
     //   - TF0 = 0 (Timer0 interrupt flag)
     //   - TR0 = 0 (Timer0 run flag)
-    TCON &= 0xCF;
+    TF0 = 0;
+    TR0 = 0;
 }
 
 void configure_timer0() {
@@ -35,19 +36,20 @@ void configure_timer0() {
 
 void start_timer1() {
     // Set TH1 and TL1
-    TH0 = TH_VALUE;
-    TL0 = TL_VALUE;
+    TH1 = TH_VALUE;
+    TL1 = TL_VALUE;
 
     // Set:
     //   - TR1 = 1 (Timer1 run flag)
-    TCON |= (1 << 6);
+    TR1 = 1;
 }
 
 void stop_timer1() {
     // Set:
     //   - TF1 = 0 (Timer1 interrupt flag)
     //   - TR1 = 0 (Timer1 run flag)
-    TCON &= 0x3F;
+    TF1 = 0;
+    TR1 = 0;
 }
 
 void configure_timer1() {
@@ -55,11 +57,11 @@ void configure_timer1() {
 
     // Set:
     //   - EA  = 1 (Enable all)
-    //   - ET1 = 1 (Enable timer0 interrupt)
+    //   - ET1 = 1 (Enable timer1 interrupt)
     IE |= (1 << 7) | (1 << 3);
 
     // Set:
-    //   - T1M1 = 0  (Set timer0 to 16bit mode)
-    //   - T1M0 = 1  (Set timer0 to 16bit mode)
+    //   - T1M1 = 0  (Set timer1 to 16bit mode)
+    //   - T1M0 = 1  (Set timer1 to 16bit mode)
     TMOD = (TMOD | (1 << 4)) & ~(1 << 5);
 }
