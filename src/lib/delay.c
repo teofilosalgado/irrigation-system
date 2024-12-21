@@ -4,14 +4,14 @@
 #include "lib/timer.h"
 
 void delay_ms(int duration) {
-    configure_timer1();
+    timer1_set_mode_16bit();
 
     int i = 0;
     for(i = 0; i < duration; i++) {
-        start_timer1();
+        timer1_start();
 
         while(!TIMER1_FLAG);
 
-        stop_timer1();
+        timer1_stop();
     }
 }

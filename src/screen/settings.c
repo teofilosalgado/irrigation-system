@@ -110,6 +110,6 @@ void settings_screen_loop(const char* title, int* current_display_values, enum s
             lcd_clear();
             break;
         }
-        delay_ms(100);
+        delay_ms(250);
     }
 }

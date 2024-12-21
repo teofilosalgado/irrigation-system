@@ -2,6 +2,7 @@
 #include "lib/timer.h"
 #include "lib/lcd.h"
 #include "lib/delay.h"
+#include "lib/util.h"
 
 #include "screen/settings.h"
 #include "screen/home.h"
@@ -35,9 +36,6 @@ enum status_t status = INACTIVE;
 
 // Auxiliary counter for timer0, keeping frequency at 1Hz
 int timer0_counter = 0;
-
-// Updates LCD display whenever on-screen values change
-int should_update_screen = 0;
 
 void set_active_time_duration() {
     active_time_duration = (duration[0] * 1000) +  (duration[1] * 100) +  (duration[2] * 10) +  duration[3];
@@ -78,16 +76,14 @@ void update_current_time() {
 }
 
 void update_status() {
-    if(status == INACTIVE
-            && (current_time[0] == trigger_time[0])
-            && (current_time[1] == trigger_time[1])
-            && (current_time[2] == trigger_time[2])
-            && (current_time[3] == trigger_time[3])
-            && (current_time[4] == trigger_time[4])
-            && (current_time[5] == trigger_time[5])) {
-        status = ACTIVE;
+    // If duration is 0, never activate
+    if(sum_array(duration, 5) == 0) {
+        return;
     }
 
+    if(status == INACTIVE && is_array_equal(current_time, trigger_time, 4)) {
+        status = ACTIVE;
+    }
     if(status == ACTIVE) {
         elapsed_active_time++;
 
@@ -99,19 +95,16 @@ void update_status() {
 }
 
 void timer0_interrupt_handler() __interrupt(1) {
-    stop_timer0();
-    should_update_screen = 0;
+    P1 ^= 0x01;
 
     if(timer0_counter >= TIMER_COUNTER_MAX) {
         timer0_counter = 0;
-        should_update_screen = 1;
 
         update_current_time();
         update_status();
+        home_screen_update(current_time, &status);
     }
     timer0_counter++;
-
-    start_timer0();
 }
 
 void main() {
@@ -123,24 +116,23 @@ void main() {
     settings_screen_loop(set_trigger_time_screen_title, trigger_time, SET_TIME);
     settings_screen_loop(set_duration_time_screen_title, duration, SET_DURATION);
 
-    // Configure timer0 interrupt
+    // Calculate total active time
     set_active_time_duration();
-    configure_timer0();
-    start_timer0();
+    
+    // Configure timer0 interrupt
+    timer0_set_mode_16bit();
+    timer0_enable_interrupt();
+    timer0_start();
 
     // Main screen loop
     home_screen_setup(trigger_time);
     while(1) {
         // Set trigger and duration values again
-        if(!BUTTON_ENTER_BIT) {
-            delay_ms(250);
+        if(!BUTTON_ENTER_BIT) {            
             settings_screen_loop(set_trigger_time_screen_title, trigger_time, SET_TIME);
             settings_screen_loop(set_duration_time_screen_title, duration, SET_DURATION);
         }
 
-        // Check if any on-scren value has been updated
-        if(should_update_screen) {
-            home_screen_update(current_time, &status);
-        }
+        delay_ms(250);
     }
 }

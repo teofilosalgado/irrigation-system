@@ -2,7 +2,7 @@
 
 #include "lib/global.h"
 
-void start_timer0() {
+void timer0_start() {
     // Set TH0 and TL0
     TH0 = TH_VALUE;
     TL0 = TL_VALUE;
@@ -12,7 +12,7 @@ void start_timer0() {
     TR0 = 1;
 }
 
-void stop_timer0() {
+void timer0_stop() {
     // Set:
     //   - TF0 = 0 (Timer0 interrupt flag)
     //   - TR0 = 0 (Timer0 run flag)
@@ -20,21 +20,23 @@ void stop_timer0() {
     TR0 = 0;
 }
 
-void configure_timer0() {
-    stop_timer0();
-
+void timer0_enable_interrupt() {
     // Set:
     //   - EA  = 1 (Enable all)
     //   - ET0 = 1 (Enable timer0 interrupt)
-    IE |= (1 << 7) | (1 << 1);
+    EA = 1;
+    ET0 = 1;
+}
 
+void timer0_set_mode_16bit() {
+    timer0_stop();
     // Set:
     //   - T0M1 = 0  (Set timer0 to 16bit mode)
     //   - T0M0 = 1  (Set timer0 to 16bit mode)
     TMOD = (TMOD | (1 << 0)) & ~(1 << 1);
 }
 
-void start_timer1() {
+void timer1_start() {
     // Set TH1 and TL1
     TH1 = TH_VALUE;
     TL1 = TL_VALUE;
@@ -44,7 +46,7 @@ void start_timer1() {
     TR1 = 1;
 }
 
-void stop_timer1() {
+void timer1_stop() {
     // Set:
     //   - TF1 = 0 (Timer1 interrupt flag)
     //   - TR1 = 0 (Timer1 run flag)
@@ -52,13 +54,16 @@ void stop_timer1() {
     TR1 = 0;
 }
 
-void configure_timer1() {
-    stop_timer1();
-
+void timer1_enable_interrupt() {
     // Set:
     //   - EA  = 1 (Enable all)
     //   - ET1 = 1 (Enable timer1 interrupt)
-    IE |= (1 << 7) | (1 << 3);
+    EA = 1;
+    ET1 = 1;
+}
+
+void timer1_set_mode_16bit() {
+    timer1_stop();
 
     // Set:
     //   - T1M1 = 0  (Set timer1 to 16bit mode)

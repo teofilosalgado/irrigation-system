@@ -1,13 +1,15 @@
 #ifndef _TIMER_H
 #define _TIME_H
 
-void start_timer0();
-void stop_timer0();
-void configure_timer0(); 
+void timer0_start();
+void timer0_stop();
+void timer0_enable_interrupt(); 
+void timer0_set_mode_16bit(); 
 
-void start_timer1();
-void stop_timer1();
-void configure_timer1(); 
+void timer1_start();
+void timer1_stop();
+void timer1_enable_interrupt(); 
+void timer1_set_mode_16bit(); 
 
 // Timer flags
 #define TIMER0_FLAG (TCON&(1<<5))
