@@ -37,13 +37,13 @@ void settings_screen_update(int* current_display_values, int* current_cursor_pos
 
 void settings_screen_loop(const char* title, int* current_display_values, enum screen_type_t screen_type) {
     // Current display value being edited
-    int current_display_value_index = 0;
+    unsigned int current_display_value_index = 0;
 
     // Display cursor position on screen
-    int current_cursor_position = 0;
+    unsigned int current_cursor_position = 0;
 
     // Max display cursor position according to screen type
-    int max_current_cursor_position = screen_type == SET_DURATION ? 2 : 3;
+    unsigned int max_current_cursor_position = screen_type == SET_DURATION ? 2 : 3;
 
     lcd_move_cursor(0, 0);
     lcd_write_string(title);

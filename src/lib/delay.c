@@ -3,10 +3,10 @@
 #include "lib/global.h"
 #include "lib/timer.h"
 
-void delay_ms(int duration) {
+void delay_ms(unsigned int duration) {
     timer1_set_mode_16bit();
 
-    int i = 0;
+    unsigned int i = 0;
     for(i = 0; i < duration; i++) {
         timer1_start();
 

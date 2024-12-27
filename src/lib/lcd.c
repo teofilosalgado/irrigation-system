@@ -33,14 +33,14 @@ void lcd_write_character(unsigned char character) {
 
 void lcd_write_string(const char *string) {
     // Send each character until the NULL terminator
-    int i = 0;
+    unsigned int i = 0;
     for(i = 0; string[i] != 0; i++)  
     {
         lcd_write_character(string[i]);
     }
 }
 
-void lcd_write_digit(int value) {
+void lcd_write_digit(unsigned int value) {
     lcd_write_character(value%10 + 48);
 }
 

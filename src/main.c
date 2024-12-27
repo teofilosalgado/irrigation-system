@@ -12,15 +12,15 @@
  */
 // Set current time screen variables
 __code const char set_current_time_screen_title[] = "Set current time";
-int current_time[] = {0, 0, 0, 0, 0, 0};
+unsigned int current_time[] = {0, 0, 0, 0, 0, 0};
 
 // Set trigger time screen variables
 __code const char set_trigger_time_screen_title[] = "Set trigger time";
-int trigger_time[] = {0, 0, 0, 0, 0, 0};
+unsigned int trigger_time[] = {0, 0, 0, 0, 0, 0};
 
 // Set trigger time screen variables
 __code const char set_duration_time_screen_title[] = "Set duration (s)";
-int duration[] = {0, 0, 0, 0};
+unsigned int duration[] = {0, 0, 0, 0};
 
 /*
  * Timing related globals
@@ -91,6 +91,7 @@ void update_status() {
         && is_array_equal(current_time, trigger_time, 4)
         && !was_already_triggered_today) {
         status = ACTIVE;
+        OUTPUT_PIN = 1;
         was_already_triggered_today = 1;
     }
     if(status == ACTIVE) {
@@ -98,6 +99,7 @@ void update_status() {
 
         if (elapsed_active_time >= active_time_duration) {
             status = INACTIVE;
+            OUTPUT_PIN = 0;
             elapsed_active_time = 0;
         }
     }
@@ -113,12 +115,16 @@ void timer0_interrupt_handler() __interrupt(1) {
         home_screen_update(current_time, &status);
         
         // Toggle the heartbeat led
-        HEARTBEAT_LED_PIN ^= 0x01;
+        HEARTBEAT_PIN ^= 0x01;
     }
     timer0_counter++;
 }
 
 void main() {
+    // Prevent undesired output state
+    OUTPUT_PIN = 0;
+
+    // Initialize LCD display
     delay_ms(1000);
     lcd_init();
  

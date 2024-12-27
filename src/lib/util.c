@@ -1,6 +1,6 @@
-#include "lib/delay.h"
+#include "lib/util.h"
 
-int is_array_equal(const int * a, const int * b, unsigned int length) {
+int is_array_equal(const unsigned int * a, const unsigned int * b, unsigned int length) {
     unsigned int i = 0;
     for (i = 0; i < length; ++i) {
         if(a[i] != b[i]) { 
@@ -10,7 +10,7 @@ int is_array_equal(const int * a, const int * b, unsigned int length) {
     return 1;
 }
 
-int sum_array(const int * a, unsigned int length) {
+int sum_array(const unsigned int * a, unsigned int length) {
     int result = 0;
     unsigned int i = 0;
     for (i = 0; i < length; ++i) {
