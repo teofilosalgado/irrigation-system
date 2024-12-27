@@ -18,6 +18,9 @@
 #define BUTTON_ENTER_BIT P0_1
 #define BUTTON_SET_BIT P0_2
 
+// Outputs
+#define HEARTBEAT_LED_PIN P1_0
+
 /*
  * Timers
  */
@@ -26,6 +29,6 @@
 #define TL_VALUE 0x66
 
 // Maximum value for timer auxiliary counter, resulting in a 1Hz update frequency (1s period)
-#define TIMER_COUNTER_MAX 1000
+#define TIMER_COUNTER_MAX 14
 
 #endif

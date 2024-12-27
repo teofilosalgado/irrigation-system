@@ -21,7 +21,7 @@ main: clean dependencies
 	$(SDCC) $(SDCC_OPTIONS) $(SOURCE_FOLDER)/$(MAIN_SOURCE_FILE) $(wildcard $(BUILD_FOLDER)/*.rel) -o $(BUILD_FOLDER)/
 	$(PACKIHX) $(BUILD_FOLDER)/$(MAIN_IHX_FILE) > $(BUILD_FOLDER)/$(MAIN_HEX_FILE)
 
-dependencies: $(SOURCE_FOLDER)/lib/*.c $(SOURCE_FOLDER)/screen/*.c
+dependencies: $(shell ls $(SOURCE_FOLDER)/**/*.c -I main.c)
 	mkdir -p $(BUILD_FOLDER)
 	$(foreach file, $^, $(SDCC) -c $(file) -I src -o $(BUILD_FOLDER)/;)
 
